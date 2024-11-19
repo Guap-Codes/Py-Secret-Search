@@ -33,23 +33,42 @@ pip install cryptography
 
 ### First-time Setup
 
-The first time you add a secret, the system will automatically generate RSA key pairs:
+The first time you use the system, it will automatically generate RSA key pairs:
 - `private_key.pem`: Keep this secure and never share it
 - `public_key.pem`: Used for encryption
 
-### Adding Secrets
+### Initial Encryption
 
-To add a new secret:
-```bash
-python decrypt.py add <secret_name> <secret_value>
+1. Create an `input.json` file with your secrets in the following format:
+
+```json
+[
+    {
+        "name": "api_key",
+        "value": "1234567890abcdef"
+    },
+    {
+        "name": "database_password",
+        "value": "mysecretpassword"
+    }
+]
 ```
 
-Example:
+2. Run the encryption:
+
 ```bash
-python decrypt.py add api_key "1234567890abcdef"
+python encrypt.py
 ```
 
-### Retrieving Secrets
+This will:
+- Prompt for an encryption password
+- Encrypt your `input.json` file
+- Save the encrypted data as `encrypted.json`
+- Securely delete the `input.json` file
+
+### Managing Secrets
+
+Once your secrets are encrypted, use `decrypt.py` to manage them:
 
 To retrieve a secret:
 ```bash
@@ -59,6 +78,16 @@ python decrypt.py get <secret_name>
 Example:
 ```bash
 python decrypt.py get api_key
+```
+
+To add a new secret:
+```bash
+python decrypt.py add <secret_name> <secret_value>
+```
+
+Example:
+```bash
+python decrypt.py add new_api_key "abcdef123456"
 ```
 
 ## Security Features
